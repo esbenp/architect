@@ -11,3 +11,26 @@
 ```bash
 composer require optimus/architect 0.1.*
 ```
+
+## Standards
+
+This package is compliant with [PSR-1], [PSR-2] and [PSR-4]. If you notice compliance oversights,
+please send a patch via pull request.
+
+[PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
+[PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
+[PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
+
+## Testing
+
+``` bash
+$ phpunit
+```
+
+## Contributing
+
+Please see [CONTRIBUTING](https://github.com/esbenp/architect/blob/master/CONTRIBUTING.md) for details.
+
+## License
+
+The MIT License (MIT). Please see [License File](https://github.com/esbenp/architect/blob/master/LICENSE) for more information.
