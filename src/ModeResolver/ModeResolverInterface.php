@@ -2,8 +2,7 @@
 
 namespace Optimus\Architect\ModeResolver;
 
-interface ModeResolverInterface {
-
+interface ModeResolverInterface
+{
     public function resolve($property, &$object, &$root, $fullPropertyPath);
-
 }

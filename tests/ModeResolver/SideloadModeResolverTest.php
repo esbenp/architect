@@ -3,8 +3,8 @@
 require_once __DIR__.'/../Controller.php';
 require_once __DIR__.'/../DatabaseTestCase.php';
 
-class SideloadModeResolverTest extends DatabaseTestCase {
-
+class SideloadModeResolverTest extends DatabaseTestCase
+{
     public function testSideloadModeResolverOnVanillaCollections()
     {
         $controller = new Controller;

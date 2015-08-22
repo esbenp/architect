@@ -5,13 +5,14 @@ use Optimus\Architect\Architect;
 
 require_once __DIR__.'/Model/Resource.php';
 
-class Controller {
-
+class Controller
+{
     private $idCounts = [];
 
     private $architect;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->architect = new Architect;
     }
 
@@ -36,7 +37,7 @@ class Controller {
         }
 
         $data = [];
-        for($i=1;$i<=$rows;$i++) {
+        for ($i=1;$i<=$rows;$i++) {
             $this->idCounts[$level]++;
 
             $tmp = [
@@ -54,5 +55,4 @@ class Controller {
 
         return $array === true ? $data : Collection::make($data);
     }
-
 }

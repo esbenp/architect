@@ -5,8 +5,8 @@ namespace Optimus\Architect;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Support\Collection;
 
-class Utility {
-
+class Utility
+{
     /**
      * Get a property of an array or object
      * @param  mixed $objectOrArray object or array
@@ -54,5 +54,4 @@ class Utility {
     {
         return is_array($input) || $input instanceof Collection;
     }
-
 }

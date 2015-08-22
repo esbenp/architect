@@ -7,11 +7,12 @@ use Optimus\Architect\ModeResolver\IdsModeResolver;
 use Optimus\Architect\ModeResolver\ModeResolverInterface;
 use Optimus\Architect\Utility;
 
-class SideloadModeResolver implements ModeResolverInterface {
-
+class SideloadModeResolver implements ModeResolverInterface
+{
     private $idsResolver;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->idsResolver = new IdsModeResolver;
     }
 
@@ -57,11 +58,11 @@ class SideloadModeResolver implements ModeResolverInterface {
     private function mergeRootCollection(&$collection, $object)
     {
         if (is_array($object)) {
-            foreach($object as $resource) {
+            foreach ($object as $resource) {
                 $this->addResourceToRootCollectionIfNonExistant($collection, $resource);
             }
-        } elseif($object instanceof Collection) {
-            $object->each(function($resource) use(&$collection){
+        } elseif ($object instanceof Collection) {
+            $object->each(function ($resource) use (&$collection) {
                 $this->addResourceToRootCollectionIfNonExistant($collection, $resource);
             });
         }
@@ -80,7 +81,7 @@ class SideloadModeResolver implements ModeResolverInterface {
 
         $copy = $collection instanceof Collection ? $collection->toArray() : $collection;
 
-        foreach($copy as $rootResource) {
+        foreach ($copy as $rootResource) {
             if ((int) Utility::getProperty($rootResource, 'id') === (int) $identifier) {
                 $exists = true;
                 break;
@@ -90,10 +91,9 @@ class SideloadModeResolver implements ModeResolverInterface {
         if ($exists === false) {
             if (is_array($collection)) {
                 $collection[] = $resource;
-            } elseif($collection instanceof Collection) {
+            } elseif ($collection instanceof Collection) {
                 $collection->push($resource);
             }
         }
     }
-
 }

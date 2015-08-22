@@ -1,7 +1,7 @@
 <?php
 
-class DatabaseTestCase extends Orchestra\Testbench\TestCase {
-
+class DatabaseTestCase extends Orchestra\Testbench\TestCase
+{
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'tests');
@@ -11,5 +11,4 @@ class DatabaseTestCase extends Orchestra\Testbench\TestCase {
             'prefix'   => ''
         ]);
     }
-
 }

@@ -6,8 +6,8 @@ use Illuminate\Support\Collection;
 use Optimus\Architect\ModeResolver\ModeResolverInterface;
 use Optimus\Architect\Utility;
 
-class IdsModeResolver implements ModeResolverInterface {
-
+class IdsModeResolver implements ModeResolverInterface
+{
     /**
      * Map through the collection and convert it to a collection
      * of ids
@@ -20,14 +20,13 @@ class IdsModeResolver implements ModeResolverInterface {
     public function resolve($property, &$object, &$root, $fullPropertyPath)
     {
         if (is_array($object)) {
-            return array_map(function($entry){
+            return array_map(function ($entry) {
                 return (int) Utility::getProperty($entry, 'id');
             }, $object);
-        } elseif($object instanceof Collection) {
-            return $object->map(function($entry){
+        } elseif ($object instanceof Collection) {
+            return $object->map(function ($entry) {
                 return (int) Utility::getProperty($entry, 'id');
             });
         }
     }
-
 }

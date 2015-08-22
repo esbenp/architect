@@ -3,8 +3,8 @@
 require_once __DIR__.'/../Controller.php';
 require_once __DIR__.'/../DatabaseTestCase.php';
 
-class EmbedModeResolverTest extends DatabaseTestCase {
-
+class EmbedModeResolverTest extends DatabaseTestCase
+{
     public function testEmbedModeResolverOnVanillaCollections()
     {
         $controller = new Controller;
@@ -158,5 +158,4 @@ class EmbedModeResolverTest extends DatabaseTestCase {
         $second = $parsed->get(1)->children->get(0)->nestedChildren;
         $this->assertEquals(3, $second->get(0)->id);
     }
-
 }

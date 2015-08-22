@@ -5,8 +5,8 @@ namespace Optimus\Architect;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 
-class Architect {
-
+class Architect
+{
     private $modeResolvers = [];
 
     /**
@@ -20,7 +20,7 @@ class Architect {
     {
         $return = [];
 
-        uksort($modes, function($a, $b){
+        uksort($modes, function ($a, $b) {
             return substr_count($b, '.')-substr_count($a, '.');
         });
 
@@ -54,11 +54,11 @@ class Architect {
     private function parseCollection(array $modes, $collection, &$root, $fullPropertyPath = '')
     {
         if (is_array($collection)) {
-            foreach($collection as $i => $resource){
+            foreach ($collection as $i => $resource) {
                 $collection[$i] = $this->parseResource($modes, $resource, $root, $fullPropertyPath);
             }
         } elseif ($collection instanceof Collection) {
-            $collection = $collection->map(function($resource) use($modes, &$root, $fullPropertyPath){
+            $collection = $collection->map(function ($resource) use ($modes, &$root, $fullPropertyPath) {
                 return $this->parseResource($modes, $resource, $root, $fullPropertyPath);
             });
         }
@@ -76,7 +76,7 @@ class Architect {
      */
     private function parseResource(array $modes, &$resource, &$root, $fullPropertyPath = '')
     {
-        foreach($modes as $relation => $mode) {
+        foreach ($modes as $relation => $mode) {
             $modeResolver = $this->resolveMode($mode);
 
             $steps = explode('.', $relation);
@@ -143,7 +143,7 @@ class Architect {
     private function createModeResolver($mode)
     {
         $class = 'Optimus\Architect\ModeResolver\\';
-        switch($mode){
+        switch ($mode) {
             default:
             case 'embed':
                 $class .= 'EmbedModeResolver';
@@ -158,5 +158,4 @@ class Architect {
 
         return new $class;
     }
-
 }

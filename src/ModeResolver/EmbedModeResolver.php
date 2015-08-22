@@ -4,8 +4,8 @@ namespace Optimus\Architect\ModeResolver;
 
 use Optimus\Architect\ModeResolver\ModeResolverInterface;
 
-class EmbedModeResolver implements ModeResolverInterface {
-
+class EmbedModeResolver implements ModeResolverInterface
+{
     /**
      * Simply returns the object since embedded is the default
      * transformation
@@ -19,5 +19,4 @@ class EmbedModeResolver implements ModeResolverInterface {
     {
         return $object;
     }
-
 }

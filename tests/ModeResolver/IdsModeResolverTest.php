@@ -3,8 +3,8 @@
 require_once __DIR__.'/../Controller.php';
 require_once __DIR__.'/../DatabaseTestCase.php';
 
-class IdsModeResolverTest extends DatabaseTestCase {
-
+class IdsModeResolverTest extends DatabaseTestCase
+{
     public function testIdsModeResolverOnVanillaCollections()
     {
         $controller = new Controller;
@@ -129,5 +129,4 @@ class IdsModeResolverTest extends DatabaseTestCase {
             3
         ], $second);
     }
-
 }
