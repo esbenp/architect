@@ -1,9 +1,9 @@
-# Laravel Controller
+# Architect
 
-[![Build Status](https://travis-ci.org/esbenp/laravel-controller.svg)](https://travis-ci.org/esbenp/laravel-controller) [![Coverage Status](https://coveralls.io/repos/esbenp/laravel-controller/badge.svg?branch=master)](https://coveralls.io/r/esbenp/laravel-controller?branch=master)
+[![Build Status](https://travis-ci.org/esbenp/architect.svg)](https://travis-ci.org/esbenp/architect) [![Coverage Status](https://coveralls.io/repos/esbenp/architect/badge.svg?branch=master)](https://coveralls.io/r/esbenp/architect?branch=master)
 
 ## Installation
 
 ```bash
-composer require optimus/laravel-controller 0.1.*
+composer require optimus/architect 0.1.*
 ```

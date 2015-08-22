@@ -1,8 +1,8 @@
 {
-    "name": "optimus/laravel-controller",
+    "name": "optimus/architect",
     "autoload": {
         "psr-4": {
-            "Optimus\\Api\\Controller\\": "src/"
+            "Optimus\\Architect\\": "src/"
         }
     },
     "require": {

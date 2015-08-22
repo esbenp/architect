@@ -1,9 +1,9 @@
 <?php
 
-namespace Optimus\Api\Controller\ModeResolver;
+namespace Optimus\Architect\ModeResolver;
 
 interface ModeResolverInterface {
 
-    public function resolve($property, &$object, &$root);
+    public function resolve($property, &$object, &$root, $fullPropertyPath);
 
 }

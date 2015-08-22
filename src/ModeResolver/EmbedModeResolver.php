@@ -1,12 +1,21 @@
 <?php
 
-namespace Optimus\Api\Controller\ModeResolver;
+namespace Optimus\Architect\ModeResolver;
 
-use Optimus\Api\Controller\ModeResolver\ModeResolverInterface;
+use Optimus\Architect\ModeResolver\ModeResolverInterface;
 
 class EmbedModeResolver implements ModeResolverInterface {
 
-    public function resolve($property, &$object, &$root)
+    /**
+     * Simply returns the object since embedded is the default
+     * transformation
+     * @param  string $property
+     * @param  object $object
+     * @param  array $root
+     * @param  string $fullPropertyPath
+     * @return object                   
+     */
+    public function resolve($property, &$object, &$root, $fullPropertyPath)
     {
         return $object;
     }

@@ -1,9 +1,11 @@
 <?php
 
-namespace Optimus\Api\Controller\ModeResolver;
+namespace Optimus\Architect\ModeResolver;
 
-use Optimus\Api\Controller\ModeResolver\IdsModeResolver;
-use Optimus\Api\Controller\ModeResolver\ModeResolverInterface;
+use Illuminate\Support\Collection;
+use Optimus\Architect\ModeResolver\IdsModeResolver;
+use Optimus\Architect\ModeResolver\ModeResolverInterface;
+use Optimus\Architect\Utility;
 
 class SideloadModeResolver implements ModeResolverInterface {
 
@@ -13,11 +15,85 @@ class SideloadModeResolver implements ModeResolverInterface {
         $this->idsResolver = new IdsModeResolver;
     }
 
-    public function resolve($property, &$object, &$root)
+    /**
+     * Move all relational resources to the root element and
+     * use idsResolver to replace them with a collection of identifiers
+     * @param  string $property The property to resolve
+     * @param  object $object The object which has the property
+     * @param  array $root The root array which will contain the object
+     * @param  string $fullPropertyPath The full dotnotation path to this property
+     * @return mixed
+     */
+    public function resolve($property, &$object, &$root, $fullPropertyPath)
     {
-        $root[$property] = $object;
+        $this->addCollectionToRoot($root, $object, $fullPropertyPath);
 
-        return $this->idsResolver->resolve($property, $object, $root);
+        return $this->idsResolver->resolve($property, $object, $root, $fullPropertyPath);
+    }
+
+    /**
+     * Add the collection to the root array
+     * @param array $root
+     * @param object $object
+     * @param string $fullPropertyPath
+     * @return void
+     */
+    private function addCollectionToRoot(&$root, &$object, $fullPropertyPath)
+    {
+        if (array_key_exists($fullPropertyPath, $root)) {
+            $this->mergeRootCollection($root[$fullPropertyPath], $object);
+        } else {
+            $root[$fullPropertyPath] = $object;
+        }
+    }
+
+    /**
+     * If a collection for this resource has already begun (i.e. multiple
+     * resources share this type of resource), then merge with the existing collection
+     * @param  mixed $collection
+     * @param  object $object
+     * @return void
+     */
+    private function mergeRootCollection(&$collection, $object)
+    {
+        if (is_array($object)) {
+            foreach($object as $resource) {
+                $this->addResourceToRootCollectionIfNonExistant($collection, $resource);
+            }
+        } elseif($object instanceof Collection) {
+            $object->each(function($resource) use(&$collection){
+                $this->addResourceToRootCollectionIfNonExistant($collection, $resource);
+            });
+        }
+    }
+
+    /**
+     * Check if the resource already exists in the root collection by id
+     * TODO: https://github.com/esbenp/laravel-controller/issues/2
+     * @param mixed $collection
+     * @param mixed $resource  
+     */
+    private function addResourceToRootCollectionIfNonExistant(&$collection, $resource)
+    {
+        $identifier = Utility::getProperty($resource, 'id');
+        $exists = false;
+
+        $copy = $collection instanceof Collection ? $collection->toArray() : $collection;
+
+        foreach($copy as $rootResource) {
+            if ((int) Utility::getProperty($rootResource, 'id') === (int) $identifier) {
+                $exists = true;
+                break;
+            }
+        }
+
+        if ($exists === false) {
+            if (is_array($collection)) {
+                $collection[] = $resource;
+            } elseif($collection instanceof Collection) {
+                $collection->push($resource);
+            }
+        }
     }
 
 }
