@@ -2,6 +2,7 @@
 
 namespace Optimus\Architect\ModeResolver;
 
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Support\Collection;
 use Optimus\Architect\ModeResolver\IdsModeResolver;
 use Optimus\Architect\ModeResolver\ModeResolverInterface;
@@ -41,10 +42,35 @@ class SideloadModeResolver implements ModeResolverInterface
      */
     private function addCollectionToRoot(&$root, &$object, $fullPropertyPath)
     {
-        if (array_key_exists($fullPropertyPath, $root)) {
-            $this->mergeRootCollection($root[$fullPropertyPath], $object);
+        // First determine if the $object is a resource or a
+        // collection of resources
+        $isResource = false;
+        if (is_array($object)) {
+            $copy = $object;
+            $values = array_values($copy);
+            $firstPropertyOrResource = array_shift($values);
+
+            if (Utility::isPrimitive($firstPropertyOrResource)) {
+                $isResource = true;
+            }
+        } elseif ($object instanceof EloquentModel) {
+            $isResource = true;
+        }
+
+        $newCollection = $isResource ? [$object] : $object;
+
+        // Does existing collections use arrays or Collections
+        $copy = $root;
+        $values = array_values($copy);
+        $existingRootCollection = array_shift($values);
+
+        $newCollection = $existingRootCollection instanceof Collection ?
+                                new Collection($newCollection) : $newCollection;
+
+        if (!array_key_exists($fullPropertyPath, $root)) {
+            $root[$fullPropertyPath] = $newCollection;
         } else {
-            $root[$fullPropertyPath] = $object;
+            $this->mergeRootCollection($root[$fullPropertyPath], $newCollection);
         }
     }
 
@@ -72,7 +98,7 @@ class SideloadModeResolver implements ModeResolverInterface
      * Check if the resource already exists in the root collection by id
      * TODO: https://github.com/esbenp/laravel-controller/issues/2
      * @param mixed $collection
-     * @param mixed $resource  
+     * @param mixed $resource
      */
     private function addResourceToRootCollectionIfNonExistant(&$collection, $resource)
     {

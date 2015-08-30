@@ -34,7 +34,8 @@ class Architect
             $return[$key] = $parsed;
         } else {
             if (in_array('sideload', $modes)) {
-                throw InvalidArgumentException('$key cannot be null when resources are transformed using sideload.');
+                throw new InvalidArgumentException('$key cannot be null when ' .
+                                    'resources are transformed using sideload.');
             }
 
             $return = $parsed;
@@ -82,10 +83,19 @@ class Architect
             $steps = explode('.', $relation);
 
             // Get the first resource in the relation
+            // TODO: Refactor
             $property = array_shift($steps);
             if (is_array($resource) || $resource instanceof \ArrayAccess) {
+                if ($resource[$property] === null) {
+                    continue;
+                }
+
                 $object = &$resource[$property];
             } else {
+                if ($resource->{$property} === null) {
+                    continue;
+                }
+
                 $object = &$resource->{$property};
             }
 

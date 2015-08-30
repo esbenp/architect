@@ -19,6 +19,7 @@ class EmbedModeResolverTest extends DatabaseTestCase
             $first->get(0)['id'],
             $first->get(1)['id']
         ]);
+        $this->assertEquals(1, $parsed->get(0)['singleChildren']['id']);
 
         $second = $parsed->get(1)['children'];
         $this->assertEquals([
@@ -27,6 +28,7 @@ class EmbedModeResolverTest extends DatabaseTestCase
             $second->get(0)['id'],
             $second->get(1)['id']
         ]);
+        $this->assertEquals(2, $parsed->get(1)['singleChildren']['id']);
     }
 
     public function testEmbedModeResolverOnNestedChildrenOnVanillaCollections()
@@ -71,6 +73,7 @@ class EmbedModeResolverTest extends DatabaseTestCase
             $first[0]['id'],
             $first[1]['id']
         ]);
+        $this->assertEquals(1, $parsed[0]['singleChildren']['id']);
 
         $second = $parsed[1]['children'];
         $this->assertEquals([
@@ -79,6 +82,7 @@ class EmbedModeResolverTest extends DatabaseTestCase
             $second[0]['id'],
             $second[1]['id']
         ]);
+        $this->assertEquals(2, $parsed[1]['singleChildren']['id']);
     }
 
     public function testEmbedModeResolverOnNestedChildrenOnArrayCollections()
@@ -115,7 +119,8 @@ class EmbedModeResolverTest extends DatabaseTestCase
             'children' => 'embed'
         ];
         $parsed = $controller->getEloquentCollection([
-            'children'
+            'children',
+            'singleChildren'
         ], $modes)['collection'];
 
         $first = $parsed->get(0)->children;
@@ -133,6 +138,9 @@ class EmbedModeResolverTest extends DatabaseTestCase
             $second->get(0)->id,
             $second->get(1)->id
         ]);
+
+        $single = $parsed->get(0)->singleChildren;
+        $this->assertEquals(1, $single->id);
     }
 
     public function testEmbedModeResolverOnNestedChildrenOnEloquentCollections()

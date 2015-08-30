@@ -10,7 +10,8 @@ class IdsModeResolverTest extends DatabaseTestCase
         $controller = new Controller;
 
         $modes = [
-            'children' => 'ids'
+            'children' => 'ids',
+            'singleChildren' => 'ids'
         ];
         $parsed = $controller->getCollection(2, $modes, 2)['collection'];
 
@@ -18,11 +19,13 @@ class IdsModeResolverTest extends DatabaseTestCase
         $this->assertEquals([
             1, 2
         ], $first);
+        $this->assertEquals(1, $parsed->get(0)['singleChildren']);
 
         $second = $parsed->get(1)['children']->toArray();
         $this->assertEquals([
             3, 4
         ], $second);
+        $this->assertEquals(2, $parsed->get(1)['singleChildren']);
     }
 
     public function testIdsModeResolverOnNestedChildrenOnVanillaCollections()
@@ -50,7 +53,8 @@ class IdsModeResolverTest extends DatabaseTestCase
         $controller = new Controller;
 
         $modes = [
-            'children' => 'ids'
+            'children' => 'ids',
+            'singleChildren' => 'ids'
         ];
         $parsed = $controller->getCollection(2, $modes, 2, false, true)['collection'];
 
@@ -58,11 +62,13 @@ class IdsModeResolverTest extends DatabaseTestCase
         $this->assertEquals([
             1, 2
         ], $first);
+        $this->assertEquals(1, $parsed[0]['singleChildren']);
 
         $second = $parsed[1]['children'];
         $this->assertEquals([
             3, 4
         ], $second);
+        $this->assertEquals(2, $parsed[1]['singleChildren']);
     }
 
     public function testIdsModeResolverOnNestedChildrenOnArrayCollections()
@@ -90,16 +96,19 @@ class IdsModeResolverTest extends DatabaseTestCase
         $controller = new Controller;
 
         $modes = [
-            'children' => 'ids'
+            'children' => 'ids',
+            'singleChildren' => 'ids'
         ];
         $parsed = $controller->getEloquentCollection([
-            'children'
+            'children',
+            'singleChildren'
         ], $modes)['collection']->toArray();
 
         $first = $parsed[0]['children'];
         $this->assertEquals([
             1, 2
         ], $first);
+        $this->assertEquals(1, $parsed[0]['singleChildren']);
 
         $second = $parsed[1]['children'];
         $this->assertEquals([

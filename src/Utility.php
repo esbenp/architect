@@ -33,10 +33,21 @@ class Utility
         // Eloquent models are also instances of ArrayAccess, and therefore
         // we check for that first
         if ($objectOrArray instanceof EloquentModel) {
-            if ($objectOrArray->relationLoaded($property)) {
-                $objectOrArray->setRelation($property, $value);
-            } else {
-                $objectOrArray->setAttribute($property, $value);
+            // Does relation exist?
+            // If so, only set the relation if not primitive. Keeping a attribute
+            // as a relation will allow for it to be converted to arrays during
+            // serialization
+            if ($property) {
+                if ($objectOrArray->relationLoaded($property) && !Utility::isPrimitive($value)) {
+                    $objectOrArray->setRelation($property, $value);
+
+            // If attribute is not a relation we just set it on
+            // the model directly. If it is a primitive relation (a relation
+            // converted to IDs) we unset the relation and set it as an attribute
+                } else {
+                    unset($objectOrArray[$property]);
+                    $objectOrArray->setAttribute($property, $value);
+                }
             }
         } elseif (is_array($objectOrArray) || $objectOrArray instanceof \ArrayAccess) {
             $objectOrArray[$property] = $value;
@@ -46,9 +57,19 @@ class Utility
     }
 
     /**
+     * Is the variable a primitive type
+     * @param  mixed  $input
+     * @return boolean
+     */
+    public static function isPrimitive($input)
+    {
+        return !is_array($input) && !($input instanceof EloquentModel) && !($input instanceof Collection);
+    }
+
+    /**
      * Is the input a collection of resources?
      * @param  mixed  $input
-     * @return boolean        
+     * @return boolean
      */
     public static function isCollection($input)
     {

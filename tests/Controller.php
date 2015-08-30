@@ -42,7 +42,11 @@ class Controller
 
             $tmp = [
                 'id' => $this->idCounts[$level],
-                'title' => 'Resource ' . $i
+                'title' => 'Resource ' . $i,
+                'singleChildren' => [
+                    'id' => $this->idCounts[$level],
+                    'name' => 'Single child'
+                ]
             ];
 
             if (is_int($children)) {
