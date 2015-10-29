@@ -15,7 +15,7 @@ class Utility
      */
     public static function getProperty($objectOrArray, $property)
     {
-        if (is_array($objectOrArray) || $objectOrArray instanceof \ArrayAccess) {
+        if (is_array($objectOrArray)) {
             return $objectOrArray[$property];
         } else {
             return $objectOrArray->{$property};
@@ -49,7 +49,7 @@ class Utility
                     $objectOrArray->setAttribute($property, $value);
                 }
             }
-        } elseif (is_array($objectOrArray) || $objectOrArray instanceof \ArrayAccess) {
+        } elseif (is_array($objectOrArray)) {
             $objectOrArray[$property] = $value;
         } else {
             $objectOrArray->{$property} = $value;

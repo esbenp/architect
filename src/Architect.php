@@ -85,7 +85,7 @@ class Architect
             // Get the first resource in the relation
             // TODO: Refactor
             $property = array_shift($steps);
-            if (is_array($resource) || $resource instanceof \ArrayAccess) {
+            if (is_array($resource)) {
                 if ($resource[$property] === null) {
                     continue;
                 }
