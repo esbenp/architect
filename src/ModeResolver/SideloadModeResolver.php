@@ -102,13 +102,13 @@ class SideloadModeResolver implements ModeResolverInterface
      */
     private function addResourceToRootCollectionIfNonExistant(&$collection, $resource)
     {
-        $identifier = Utility::getProperty($resource, 'id');
+        $identifier = Utility::getProperty($resource, $resource->getKeyName());
         $exists = false;
 
         $copy = $collection instanceof Collection ? $collection->toArray() : $collection;
 
         foreach ($copy as $rootResource) {
-            if ((int) Utility::getProperty($rootResource, 'id') === (int) $identifier) {
+            if (Utility::getProperty($rootResource, $resource->getKeyName()) == $identifier) {
                 $exists = true;
                 break;
             }
