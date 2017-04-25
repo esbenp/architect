@@ -18,7 +18,8 @@ class Utility
         if (is_array($objectOrArray)) {
             return $objectOrArray[$property];
         } else {
-            return $objectOrArray->{$property};
+            return $objectOrArray->getAttributes()[$property];
+            // return $objectOrArray->{$property};
         }
     }
 
