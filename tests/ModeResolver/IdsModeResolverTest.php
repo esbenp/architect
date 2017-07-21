@@ -91,7 +91,7 @@ class IdsModeResolverTest extends DatabaseTestCase
         ], $second);
     }
 
-    public function testStringIdsModeResolverOnNestedChildrenOnArrayCollections()
+    public function testIdsModeResolverOnNestedChildrenOnArrayCollectionsAndStringKeys()
     {
         $controller = new Controller;
 
