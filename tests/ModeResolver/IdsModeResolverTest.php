@@ -91,6 +91,26 @@ class IdsModeResolverTest extends DatabaseTestCase
         ], $second);
     }
 
+    public function testStringIdsModeResolverOnNestedChildrenOnArrayCollections()
+    {
+        $controller = new Controller;
+
+        $modes = [
+            'children.nestedChildren' => 'ids'
+        ];
+        $parsed = $controller->getCollection(2, $modes, 2, 2, true, true)['collection'];
+
+        $first = $parsed[0]['children'][0]['nestedChildren'];
+        $this->assertEquals([
+            'aaa1', 'aaa2'
+        ], $first);
+
+        $second = $parsed[1]['children'][1]['nestedChildren'];
+        $this->assertEquals([
+            'aaa7', 'aaa8'
+        ], $second);
+    }
+
     public function testIdsModeResolverOnEloquentCollections()
     {
         $controller = new Controller;
