@@ -78,7 +78,7 @@ class Architect
     private function parseResource(array $modes, &$resource, &$root, $fullPropertyPath = '')
     {
         foreach ($modes as $relation => $mode) {
-            $modeResolver = $this->resolveMode($mode);
+            $this->resolveMode($mode);
 
             $steps = explode('.', $relation);
 
@@ -134,7 +134,7 @@ class Architect
     /**
      * Resolve a mode resolver class if it has not been resolved before
      * @param  string $mode The mode to be resolved
-     * @return Optimus\Architect\ModeResolver\ModeResolverInterface
+     * @return \Optimus\Architect\ModeResolver\ModeResolverInterface
      */
     private function resolveMode($mode)
     {
@@ -148,7 +148,7 @@ class Architect
     /**
      * Instantiate a mode resolver class
      * @param  string $mode [description]
-     * @return Optimus\Architect\ModeResolver\ModeResolverInterface
+     * @return \Optimus\Architect\ModeResolver\ModeResolverInterface
      */
     private function createModeResolver($mode)
     {
