@@ -92,19 +92,14 @@ class Architect
 
                 $object = &$resource[$property];
             } else {
-                if ($resource->{$property} === null) {
+                if (!is_object($resource)) {
                     continue;
                 }
 
-                // if we failed to load the relation and the resource is a
-                // string (the id), we can't do anything, so return
-                // FIXME: Find root cause of error "Indirect modification of overloaded property"
-                // (Note: encountered with relations 3 levels deep, with same model relating to multiple)
-                if ($mode === 'sideload' && getType($resource->{$property}) === 'string') {
-                    return;
+                $object = $resource->{$property};
+                if (!is_object($object)) {
+                    continue;
                 }
-
-                $object = &$resource->{$property};
             }
 
             if (empty($steps)) {
