@@ -13,13 +13,19 @@ class Utility
      * @param  string $property
      * @return mixed
      */
-    public static function getProperty($objectOrArray, $property)
+    public static function getProperty($objectOrArray, $property, $format = false)
     {
         if (is_array($objectOrArray)) {
-            return $objectOrArray[$property];
+            $ret = $objectOrArray[$property];
         } else {
-            return $objectOrArray->{$property};
+            $ret = $objectOrArray->{$property};
         }
+
+        if (!$format) {
+            return $ret;
+        }
+
+        return static::formatProperty($ret);
     }
 
     /**
@@ -74,5 +80,21 @@ class Utility
     public static function isCollection($input)
     {
         return is_array($input) || $input instanceof Collection;
+    }
+
+    /**
+     * Format a given property.
+     * @param mixed $property
+     * @param bool $numericIntegers If true and property passes is_numeric test, cast as an integer
+     * @return mixed
+     */
+    private static function formatProperty($property, $numericIntegers = true)
+    {
+        // handle default integer based properties
+        if ($numericIntegers && is_numeric($property)) {
+            return (int) $property;
+        }
+
+        return $property;
     }
 }

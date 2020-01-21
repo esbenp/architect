@@ -23,14 +23,14 @@ class Controller
         return $this->architect->parseData($collection, $modes, 'collection');
     }
 
-    public function getCollection($rows, array $modes = [], $children = false, $childrensChildren = false, $array = false)
+    public function getCollection($rows, array $modes = [], $children = false, $childrensChildren = false, $array = false, $stringKeys = false)
     {
-        $collection = $this->createCollection($rows, $children, $childrensChildren, $array);
+        $collection = $this->createCollection($rows, $children, $childrensChildren, $array, $stringKeys);
 
         return $this->architect->parseData($collection, $modes, 'collection');
     }
 
-    private function createCollection($rows = 2, $children = false, $childrensChildren = false, $array = false, $level = 1)
+    private function createCollection($rows = 2, $children = false, $childrensChildren = false, $array = false, $stringKeys = false, $level = 1)
     {
         if (!array_key_exists($level, $this->idCounts)) {
             $this->idCounts[$level] = 0;
@@ -40,18 +40,19 @@ class Controller
         for ($i=1;$i<=$rows;$i++) {
             $this->idCounts[$level]++;
 
+            $newId = (!$stringKeys ? $this->idCounts[$level] : 'aaa'.dechex($this->idCounts[$level]));
             $tmp = [
-                'id' => $this->idCounts[$level],
+                'id' => $newId,
                 'title' => 'Resource ' . $i,
                 'singleChildren' => [
-                    'id' => $this->idCounts[$level],
+                    'id' => $newId,
                     'name' => 'Single child'
                 ]
             ];
 
             if (is_int($children)) {
                 $key = $level === 1 ? 'children' : 'nestedChildren';
-                $tmp[$key] = $this->createCollection($children, $childrensChildren, false, $array, ($level+1));
+                $tmp[$key] = $this->createCollection($children, $childrensChildren, false, $array, $stringKeys, ($level+1));
             }
 
             $data[] = $tmp;

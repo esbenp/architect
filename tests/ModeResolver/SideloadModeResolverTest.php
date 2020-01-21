@@ -77,6 +77,46 @@ class SideloadModeResolverTest extends DatabaseTestCase
         ]);
     }
 
+    public function testSideloadModeResolverOnNestedChildrenOnVanillaCollectionsAndStringKeys()
+    {
+        $controller = new Controller;
+
+        $modes = [
+            'children.nestedChildren' => 'sideload'
+        ];
+        $parsed = $controller->getCollection(2, $modes, 2, 2, false, true);
+        $collection = $parsed['collection'];
+        $nestedChildren = $parsed['children.nestedChildren'];
+
+        $first = $collection->get(0);
+        $this->assertEquals([
+            'aaa1', 'aaa2', 'aaa3', 'aaa4', 'aaa1', 'aaa2', 'aaa3', 'aaa4'
+        ], [
+            $first['children']->get(0)['nestedChildren']->get(0),
+            $first['children']->get(0)['nestedChildren']->get(1),
+            $first['children']->get(1)['nestedChildren']->get(0),
+            $first['children']->get(1)['nestedChildren']->get(1),
+            $nestedChildren->get(0)['id'],
+            $nestedChildren->get(1)['id'],
+            $nestedChildren->get(2)['id'],
+            $nestedChildren->get(3)['id']
+        ]);
+
+        $second = $collection->get(1);
+        $this->assertEquals([
+            'aaa5', 'aaa6', 'aaa7', 'aaa8', 'aaa5', 'aaa6', 'aaa7', 'aaa8'
+        ], [
+            $second['children']->get(0)['nestedChildren']->get(0),
+            $second['children']->get(0)['nestedChildren']->get(1),
+            $second['children']->get(1)['nestedChildren']->get(0),
+            $second['children']->get(1)['nestedChildren']->get(1),
+            $nestedChildren->get(4)['id'],
+            $nestedChildren->get(5)['id'],
+            $nestedChildren->get(6)['id'],
+            $nestedChildren->get(7)['id']
+        ]);
+    }
+
     public function testSideloadModeResolverOnParentAndNestedChildrenOnVanillaCollections()
     {
         $controller = new Controller;
