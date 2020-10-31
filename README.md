@@ -22,24 +22,24 @@ Book 1-----n Author
 This is how related resources are loaded by default using embedded mode.
 
 ```json
-{  
-   "books":[  
-      {  
+{
+   "books":[
+      {
          "id":1,
          "author_id":1,
          "title":"How to save the world from evil",
          "pages":100,
-         "author":{  
+         "author":{
             "id":1,
             "name":"Optimus Prime"
          }
       },
-      {  
+      {
          "id":2,
          "author_id":2,
          "title":"How to take over the world",
          "pages":100,
-         "author":{  
+         "author":{
             "id":2,
             "name":"Megatron"
          }
@@ -57,16 +57,16 @@ Only load the IDs of the related resource.
 [Using the primary key property of Eloquent models is in the roadmap.](https://github.com/esbenp/architect/issues/1)
 
 ```json
-{  
-   "books":[  
-      {  
+{
+   "books":[
+      {
          "id":1,
          "author_id":1,
          "title":"How to save the world from evil",
          "pages":100,
          "author":1
       },
-      {  
+      {
          "id":2,
          "author_id":2,
          "title":"How to take over the world",
@@ -83,26 +83,26 @@ Hoist the related resources into the global scope and leave behind the IDs
 using the ID mode resolver.
 
 ```json
-{  
-   "author":[  
-      {  
+{
+   "author":[
+      {
          "id":1,
          "name":"Optimus Prime"
       },
-      {  
+      {
          "id":2,
          "name":"Megatron"
       }
    ],
-   "books":[  
-      {  
+   "books":[
+      {
          "id":1,
          "author_id":1,
          "title":"How to save the world from evil",
          "pages":100,
          "author":1
       },
-      {  
+      {
          "id":2,
          "author_id":2,
          "title":"How to take over the world",
@@ -133,9 +133,8 @@ $parsed = $architect->parseData($books, [
 nice convenience methods to define the Architect relationships in query parameters.
 
 ## Installation
-
 ```bash
-composer require optimus/architect ~1.0
+composer require optimus/architect dev-laravel-6
 ```
 
 ## Standards
