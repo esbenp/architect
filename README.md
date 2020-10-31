@@ -134,7 +134,7 @@ nice convenience methods to define the Architect relationships in query paramete
 
 ## Installation
 ```bash
-composer require optimus/architect dev-laravel-6
+composer require optimus/architect
 ```
 
 ## Standards
