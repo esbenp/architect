@@ -2,8 +2,8 @@
 
 namespace Optimus\Architect;
 
-use InvalidArgumentException;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class Architect
 {
@@ -11,9 +11,11 @@ class Architect
 
     /**
      * Parse a collection using given modes.
-     * @param  mixed $data The collection to be parsed
+     *
+     * @param  mixed  $data  The collection to be parsed
      * @param  array  $modes The modes to be used, format is ['relation' => 'mode']
-     * @param  string $key A key to hoist the collection into the root array
+     * @param  string $key   A key to hoist the collection into the root array
+     *
      * @return array
      */
     public function parseData($data, array $modes, $key = null)
@@ -21,7 +23,7 @@ class Architect
         $return = [];
 
         uksort($modes, function ($a, $b) {
-            return substr_count($b, '.')-substr_count($a, '.');
+            return substr_count($b, '.') - substr_count($a, '.');
         });
 
         if (Utility::isCollection($data)) {
@@ -35,7 +37,7 @@ class Architect
         } else {
             if (in_array('sideload', $modes)) {
                 throw new InvalidArgumentException('$key cannot be null when ' .
-                                    'resources are transformed using sideload.');
+                                                   'resources are transformed using sideload.');
             }
 
             $return = $parsed;
@@ -46,10 +48,12 @@ class Architect
 
     /**
      * Parse a collection using given modes
+     *
      * @param  array  $modes
-     * @param  mixed $collection
-     * @param  array $root
+     * @param  mixed  $collection
+     * @param  array  $root
      * @param  string $fullPropertyPath
+     *
      * @return mixed
      */
     private function parseCollection(array $modes, $collection, &$root, $fullPropertyPath = '')
@@ -58,7 +62,7 @@ class Architect
             foreach ($collection as $i => $resource) {
                 $collection[$i] = $this->parseResource($modes, $resource, $root, $fullPropertyPath);
             }
-        } elseif ($collection instanceof Collection) {
+        } else if ($collection instanceof Collection) {
             $collection = $collection->map(function ($resource) use ($modes, &$root, $fullPropertyPath) {
                 return $this->parseResource($modes, $resource, $root, $fullPropertyPath);
             });
@@ -69,16 +73,18 @@ class Architect
 
     /**
      * Parse a single resource using given modes
+     *
      * @param  array  $modes
-     * @param  mixed $resource
-     * @param  array $root
+     * @param  mixed  $resource
+     * @param  array  $root
      * @param  string $fullPropertyPath
+     *
      * @return mixed
      */
     private function parseResource(array $modes, &$resource, &$root, $fullPropertyPath = '')
     {
         foreach ($modes as $relation => $mode) {
-            $modeResolver = $this->resolveMode($mode);
+            $this->resolveMode($mode);
 
             $steps = explode('.', $relation);
 
@@ -102,12 +108,12 @@ class Architect
             if (empty($steps)) {
                 // This is the deepest level. Resolve it.
                 $fullPropertyPath .= $relation;
-                $object = $this->modeResolvers[$mode]->resolve($relation, $object, $root, $fullPropertyPath);
+                $object           = $this->modeResolvers[$mode]->resolve($relation, $object, $root, $fullPropertyPath);
             } else {
                 // More levels exist in this relation.
                 // We want a drill down and resolve the deepest level first.
 
-                $path = implode('.', $steps);
+                $path  = implode('.', $steps);
                 $modes = [
                     $path => $mode
                 ];
@@ -133,8 +139,10 @@ class Architect
 
     /**
      * Resolve a mode resolver class if it has not been resolved before
+     *
      * @param  string $mode The mode to be resolved
-     * @return Optimus\Architect\ModeResolver\ModeResolverInterface
+     *
+     * @return \Optimus\Architect\ModeResolver\ModeResolverInterface
      */
     private function resolveMode($mode)
     {
@@ -147,8 +155,10 @@ class Architect
 
     /**
      * Instantiate a mode resolver class
+     *
      * @param  string $mode [description]
-     * @return Optimus\Architect\ModeResolver\ModeResolverInterface
+     *
+     * @return \Optimus\Architect\ModeResolver\ModeResolverInterface
      */
     private function createModeResolver($mode)
     {
